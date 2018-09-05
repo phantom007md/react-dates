@@ -1,28 +1,88 @@
 /*App Component*/
 .dates {
+  font-family: IRANSans;
+  direction: rtl;
+  text-align: right;
+  cursor: default;
+  padding-top: 20px;
   position: relative;
+}
+
+.card-title {
+  color: #854000;
+}
+
+.index-actions button {
+  margin: 0 7px;
+}
+
+.index-actions button:first-child {
+  margin: 0px;
+}
+
+.user {
+  margin: 10px 0;
+  color: #28467a;
 }
 
 /*DatesList Component*/
 .dates__list {
-  margin-top: 80px;
+  margin-top: 10px;
 }
+
 .table * {
   text-align: center;
 }
+
 .table td {
   text-align: center;
   vertical-align: middle;
 }
-.status{
+
+.status {
   border-radius: 5px;
   padding: 5px;
 }
-.status--success{
-  color: rgba(49,40,39,0.75);
+
+.status--success {
+  color: rgba(49, 40, 39, 0.75);
   background-color: rgba(124, 218, 61, 0.66);
 }
-.status--danger{
+
+.status--danger {
   color: #ffffff;
   background-color: rgba(242, 129, 0, 0.75);
 }
+
+.controls__item {
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+/* Login Page */
+
+.auth {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .8);
+  z-index: 1;
+}
+
+.auth > div {
+  position: absolute;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% , -50%);
+}
+
+
+
+
+
+
+
+

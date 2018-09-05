@@ -1,27 +1,29 @@
 import React, {Component} from 'react';
+import Card from "./utils/card";
 
 const Status = props => {
     if (props.status) {
-        return <div className='status status--success'>تایید شده</div>
+        return <button disabled={props.disabled || true}
+                       className='btn btn-success'>تایید شده</button>
     }
-    return <div className='status status--danger'>تایید نشده</div>
+    return <button disabled={props.disabled || true}
+                   className='btn btn-warning'>تایید نشده</button>
 }
 
 class DateList extends Component {
 
     state = {
-        status: false,
+        isLoggedIn: false,
+        status: true,
         isAdmin: false,
     }
 
     render() {
         return (
             <div className="dates__list">
-                <div className="container">
-                    <div className="card card-body">
-                        <h5 className="card-title">لیست تمامی قرار ها</h5>
+                    <Card title='لیست تمامی قرار ها'>
                         <div className='table-responsive'
-                             style={{marginTop: '20px', height: '500px'}}>
+                             style={{marginTop: '10px'}}>
                             <table
                                 className="table table-bordered table-striped table-hover">
                                 <thead>
@@ -49,29 +51,24 @@ class DateList extends Component {
                                     </td>
                                     <td>۶ ساعت</td>
                                     <td>
-                                        <Status status={this.state.status}/>
+                                        <Status disabled={!this.isAdmin}
+                                                status={this.state.status}/>
                                     </td>
                                     {
                                         this.state.isAdmin &&
                                         <td>
-                                            <span style={{
-                                                padding: '0 5px',
-                                                cursor: 'pointer'
-                                            }}><i
-                                                className="material-icons">edit</i></span>
-                                            <span style={{
-                                                padding: '0 5px',
-                                                cursor: 'pointer'
-                                            }}><i
-                                                className="material-icons">delete</i></span>
+                                            <span className='controls__item'>
+                                                <i className="material-icons">edit</i></span>
+                                            <span className='controls__item'>
+                                                <i className="material-icons">delete</i>
+                                            </span>
                                         </td>
                                     }
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
+                    </Card>
             </div>
         );
     }
