@@ -14,6 +14,7 @@ class Login extends Component {
         try{
             let res = await axios.post('register/login', {data:this.state.data})
             this.props.fetchUser(res.data)
+            localStorage.setItem('user', JSON.stringify({id:res.data.id, name: res.data.name}))
         }catch (e) {
             // if status 404 کاربر پیدا نشد   and so on
             this.setState({errMessage:'کاربر وجود ندارد یا خطایی رخ داده.'})
@@ -24,8 +25,11 @@ class Login extends Component {
         return (
             <div className="login">
                 <Card title='ورود'>
-                    <form>
+                    <div>
                         <InputGroup type='text'
+                                    onKeyPress={e => {
+                                        e.key === 'Enter' && this.login()
+                                    }}
                                     style={{direction:'ltr', textAlign: 'left'}}
                                     onChange={e=>{this.setState({data:e.target.value})}}
                                     title='شماره مبایل یا ایمیل :'
@@ -45,7 +49,7 @@ class Login extends Component {
                                     className="btn btn-outline-primary">ثبت نام
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </Card>
             </div>
         );

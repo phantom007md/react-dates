@@ -9,7 +9,13 @@ import axios from 'axios';
 class AddDate extends Component {
 
     state = {
-        topics:[],
+        userID: null,
+        houres: 0,
+        topics: [],
+        topic: {
+            id: null,
+            basePrice: 0,
+        },
         finalPrice: 0
     }
 
@@ -27,42 +33,62 @@ class AddDate extends Component {
         await this.setState({topics})
     }
 
+    setTopic = async topicID => {
+        let topic = (await axios.get(`/topics/${topicID}`)).data
+        await this.setState({topic: {id: topic.id, basePrice: topic.basePrice}})
+    }
+
+    setFinalPrice = async (hores)=> {
+        await this.setState({hores})
+        let finalPrice = await Math.floor(this.state.topic.basePrice * hores)
+        await this.setState({finalPrice:finalPrice})
+    }
+
+    pay = () => {
+    //    send request to pay the money for the topic and the hores requested
+    }
+
     render() {
         return (
             <div className="dates__list">
                 <Card title='ثبت درخواست خود'>
-                    <form>
+                    <div>
 
                         <DatePicker
                             placeholderText='زمان و روز خود را مشخص کنید'
                             showTimeSelect
                             dateFormat="llll"
                             selected={this.state.startDate}
-                            onChange={(startDate)=>{this.setState({startDate})}}
+                            onChange={(startDate) => {
+                                this.setState({startDate})
+                            }}
                         />
 
                         {/*<InputGroup type='text'*/}
-                                    {/*title='تاریخ و زمان شروع مد نظر :'*/}
-                                    {/*id='dateTime'/>*/}
+                        {/*title='تاریخ و زمان شروع مد نظر :'*/}
+                        {/*id='dateTime'/>*/}
 
-                        <SelectGroup options={this.state.topics} title='دوره خود را انتخاب کنید'/>
+                        <SelectGroup options={this.state.topics}
+                                     onChange={e => this.setTopic(e.target.value)}
+                                     title='دوره خود را انتخاب کنید'/>
 
                         <InputGroup type='text'
                                     title='هزینه هر ساعت :'
                                     id='basePrice'
                                     disabled
-                                    defaultValue='50'/>
+                                    defalutValue={this.state.topic.basePrice||0}/>
 
                         <InputGroup type='text'
-                                   title='مدت زمان :'
-                                   id='length'
-                                   placeholder='مدت زمان مورد نظر را به ساعت وارد کنید'/>
+                                    onChange={e=>this.setFinalPrice(e.target.value)}
+                                    title='مدت زمان :'
+                                    id='length'
+                                    placeholder='مدت زمان مورد نظر را به ساعت وارد کنید'/>
 
                         <InputGroup type='text'
                                     title='هزینه قابل پرداخت :'
                                     id='finalPrice'
                                     disabled
-                                    defaultValue='500'/>
+                                    defalutValue={this.state.finalPrice||0}/>
 
                         <div className="form-group text-left">
                             <button type="button"
@@ -71,7 +97,7 @@ class AddDate extends Component {
                             </button>
                         </div>
 
-                    </form>
+                    </div>
                 </Card>
             </div>
         );

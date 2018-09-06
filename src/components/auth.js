@@ -16,7 +16,8 @@ class Auth extends Component {
     render() {
         return (
             <div className='auth'>
-                {(this.state.activeTab === 'sign-up') ? <SignUp/> : ''}
+                {(this.state.activeTab === 'sign-up') ?
+                    <SignUp fetchUser={this.props.fetchUser}/> : ''}
                 {(this.state.activeTab === 'login') ? <Login
                     fetchUser={this.props.fetchUser}
                     changeTab={this.changeTab}/> : ''}

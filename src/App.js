@@ -14,8 +14,19 @@ class App extends Component {
         },
     }
 
+    componentWillMount() {
+        (localStorage.getItem('user') && !this.state.user.id) &&
+        this.setState({user: JSON.parse(localStorage.getItem('user'))})
+    }
+
+    componentWillUpdate() {
+        (localStorage.getItem('user') && !this.state.user.id) &&
+        this.setState({user: JSON.parse(localStorage.getItem('user'))})
+    }
+
     logOut = async () => {
         await this.setState({user: {id: null, name: null}})
+        localStorage.removeItem('user')
     }
 
     fetchUser = (user) => {
@@ -30,7 +41,8 @@ class App extends Component {
     render() {
         return (
             <div className="dates">
-                {(!this.state.user.id) ? <Auth fetchUser={this.fetchUser}/> : ''}
+                {(!this.state.user.id) ?
+                    <Auth fetchUser={this.fetchUser}/> : ''}
                 <div className="container-fluid">
                     <div className="container">
                         {this.state.user.id &&

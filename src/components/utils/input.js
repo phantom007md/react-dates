@@ -5,9 +5,11 @@ const InputGroup = props =>
         <label
             htmlFor={props.id || Date.now()}>{props.title || ''}</label>
         <input
+            onKeyPress={props.onKeyPress}
+            value={props.value||undefined}
             style={props.style}
             onChange={props.onChange}
-            defaultValue={props.defaultValue}
+            defaultValue={props.defaultValue||undefined}
             disabled={props.disabled}
             type={props.type || 'text'}
             className="form-control"
