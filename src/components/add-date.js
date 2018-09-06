@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import InputGroup from "./utils/input";
 import Card from "./utils/card";
 import SelectGroup from "./utils/select";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 
 class AddDate extends Component {
@@ -9,6 +11,11 @@ class AddDate extends Component {
     state = {
         topics:[],
         finalPrice: 0
+    }
+
+    componentWillMount() {
+        // moment.locale('IR-fa')
+        // moment.loadPersian({dialect: 'persian-modern'})
     }
 
     componentDidMount() {
@@ -26,9 +33,17 @@ class AddDate extends Component {
                 <Card title='ثبت درخواست خود'>
                     <form>
 
-                        <InputGroup type='text'
-                                    title='تاریخ و زمان شروع مد نظر :'
-                                    id='dateTime'/>
+                        <DatePicker
+                            placeholderText='زمان و روز خود را مشخص کنید'
+                            showTimeSelect
+                            dateFormat="llll"
+                            selected={this.state.startDate}
+                            onChange={(startDate)=>{this.setState({startDate})}}
+                        />
+
+                        {/*<InputGroup type='text'*/}
+                                    {/*title='تاریخ و زمان شروع مد نظر :'*/}
+                                    {/*id='dateTime'/>*/}
 
                         <SelectGroup options={this.state.topics} title='دوره خود را انتخاب کنید'/>
 

@@ -5,6 +5,8 @@ const InputGroup = props =>
         <label
             htmlFor={props.id || Date.now()}>{props.title || ''}</label>
         <input
+            style={props.style}
+            onChange={props.onChange}
             defaultValue={props.defaultValue}
             disabled={props.disabled}
             type={props.type || 'text'}
