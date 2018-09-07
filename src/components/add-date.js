@@ -16,7 +16,7 @@ class AddDate extends Component {
             id: null,
             basePrice: 0,
         },
-        finalPrice: 0
+        finalPrice: 0,
     }
 
     componentWillMount() {
@@ -36,12 +36,17 @@ class AddDate extends Component {
     setTopic = async topicID => {
         let topic = (await axios.get(`/topics/${topicID}`)).data
         await this.setState({topic: {id: topic.id, basePrice: topic.basePrice}})
+        this.setFinalPrice()
     }
 
-    setFinalPrice = async (hores)=> {
-        await this.setState({hores})
-        let finalPrice = await Math.floor(this.state.topic.basePrice * hores)
-        await this.setState({finalPrice:finalPrice})
+    setHoures = async (houres) => {
+        await this.setState({houres})
+        this.setFinalPrice()
+    }
+
+    setFinalPrice = async ()=> {
+        let finalPrice = Math.floor(this.state.topic.basePrice * this.state.houres)
+        await this.setState({finalPrice})
     }
 
     pay = () => {
@@ -72,23 +77,21 @@ class AddDate extends Component {
                                      onChange={e => this.setTopic(e.target.value)}
                                      title='دوره خود را انتخاب کنید'/>
 
-                        <InputGroup type='text'
-                                    title='هزینه هر ساعت :'
-                                    id='basePrice'
-                                    disabled
-                                    defalutValue={this.state.topic.basePrice||0}/>
+                        <div className="form-group">
+                            <label>هزینه هر ساعت :</label>      
+                            <div className="filed">{this.state.topic.basePrice}</div>
+                        </div>
 
                         <InputGroup type='text'
-                                    onChange={e=>this.setFinalPrice(e.target.value)}
+                                    onChange={e=>this.setHoures(e.target.value)}
                                     title='مدت زمان :'
                                     id='length'
                                     placeholder='مدت زمان مورد نظر را به ساعت وارد کنید'/>
-
-                        <InputGroup type='text'
-                                    title='هزینه قابل پرداخت :'
-                                    id='finalPrice'
-                                    disabled
-                                    defalutValue={this.state.finalPrice||0}/>
+                        
+                        <div className="form-group">
+                            <label>هزینه نهایی :</label>      
+                            <div className="filed">{this.state.finalPrice}</div>
+                        </div>
 
                         <div className="form-group text-left">
                             <button type="button"

@@ -131,6 +131,14 @@
   transform: translate(-50% , -50%);
 }
 
+/* add-date */
+.filed{
+  background-color: #e9ecef;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: .375rem .75rem;
+  color: rgb(112, 112, 112);
+}
 
 
 
