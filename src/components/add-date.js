@@ -9,19 +9,28 @@ import axios from 'axios';
 class AddDate extends Component {
 
     state = {
-        userID: null,
-        houres: 0,
+        startDate: null,
+        horses: 0,
         topics: [],
         topic: {
             id: null,
             basePrice: 0,
         },
+        user: {
+            id: null,
+            name: null,
+        },
         finalPrice: 0,
     }
 
     componentWillMount() {
-        // moment.locale('IR-fa')
-        // moment.loadPersian({dialect: 'persian-modern'})
+        (localStorage.getItem('DatesUser') && !this.state.user.id) &&
+        this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
+    }
+
+    componentWillUpdate() {
+        (localStorage.getItem('DatesUser') && !this.state.user.id) &&
+        this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
     }
 
     componentDidMount() {
@@ -39,18 +48,28 @@ class AddDate extends Component {
         this.setFinalPrice()
     }
 
-    setHoures = async (houres) => {
-        await this.setState({houres})
-        this.setFinalPrice()
-    }
-
-    setFinalPrice = async ()=> {
-        let finalPrice = Math.floor(this.state.topic.basePrice * this.state.houres)
+    setFinalPrice = async () => {
+        let finalPrice = Math.floor(this.state.topic.basePrice * this.state.horses)
         await this.setState({finalPrice})
     }
 
-    pay = () => {
-    //    send request to pay the money for the topic and the hores requested
+    pay = async () => {
+        try {
+            let res = await axios.post('/payments/pay', {
+                user_id: this.state.user.id,
+                topic_id: this.state.topic.id,
+                horses: this.state.horses,
+                start_date: this.state.startDate,
+            })
+
+            if (res.data.redirect !== 'failed') {
+                window.location = res.data.redirect
+            }else{
+                console.log(res.data, ' :', 'خطایی رخ داده است')
+            }
+        } catch (e) {
+            console.dir(e)
+        }
     }
 
     render() {
@@ -78,23 +97,29 @@ class AddDate extends Component {
                                      title='دوره خود را انتخاب کنید'/>
 
                         <div className="form-group">
-                            <label>هزینه هر ساعت :</label>      
-                            <div className="filed">{this.state.topic.basePrice}</div>
+                            <label>هزینه هر ساعت :</label>
+                            <div
+                                className="filed">{this.state.topic.basePrice}</div>
                         </div>
 
                         <InputGroup type='text'
-                                    onChange={e=>this.setHoures(e.target.value)}
+                                    onChange={async e => {
+                                        let horses = e.target.value
+                                        await this.setState({horses})
+                                        this.setFinalPrice()
+                                    }}
                                     title='مدت زمان :'
                                     id='length'
                                     placeholder='مدت زمان مورد نظر را به ساعت وارد کنید'/>
-                        
+
                         <div className="form-group">
-                            <label>هزینه نهایی :</label>      
+                            <label>هزینه نهایی :</label>
                             <div className="filed">{this.state.finalPrice}</div>
                         </div>
 
                         <div className="form-group text-left">
                             <button type="button"
+                                    onClick={this.pay}
                                     disabled={this.state.finalPrice <= 0}
                                     className="btn btn-warning">پرداخت
                             </button>

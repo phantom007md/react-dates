@@ -18,9 +18,9 @@ class Auth extends Component {
             <div className='auth'>
                 {(this.state.activeTab === 'sign-up') ?
                     <SignUp fetchUser={this.props.fetchUser}/> : ''}
-                {(this.state.activeTab === 'login') ? <Login
-                    fetchUser={this.props.fetchUser}
-                    changeTab={this.changeTab}/> : ''}
+                {(this.state.activeTab === 'login') ?
+                    <Login fetchUser={this.props.fetchUser}
+                           changeTab={this.changeTab}/> : ''}
             </div>
         );
     }

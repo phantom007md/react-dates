@@ -13,8 +13,8 @@ class Login extends Component {
     login = async () => {
         try{
             let res = await axios.post('register/login', {data:this.state.data})
-            this.props.fetchUser(res.data)
-            localStorage.setItem('user', JSON.stringify({id:res.data.id, name: res.data.name}))
+            localStorage.setItem('DatesUser', JSON.stringify({id:res.data.id, name: res.data.name, isAdmin:res.date.isAdmin}))
+            this.props.fetchUser()
         }catch (e) {
             // if status 404 کاربر پیدا نشد   and so on
             this.setState({errMessage:'کاربر وجود ندارد یا خطایی رخ داده.'})

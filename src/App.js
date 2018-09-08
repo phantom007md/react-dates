@@ -7,35 +7,31 @@ import Auth from "./components/auth";
 class App extends Component {
 
     state = {
-        activeTab: 'add',
+        activeTab: 'list',
         user: {
             id: null,
             name: null,
+            isAdmin: null,
         },
     }
 
     componentWillMount() {
-        (localStorage.getItem('user') && !this.state.user.id) &&
-        this.setState({user: JSON.parse(localStorage.getItem('user'))})
+        (localStorage.getItem('DatesUser') && !this.state.user.id) &&
+        this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
     }
 
     componentWillUpdate() {
-        (localStorage.getItem('user') && !this.state.user.id) &&
-        this.setState({user: JSON.parse(localStorage.getItem('user'))})
+        (localStorage.getItem('DatesUser') && !this.state.user.id) &&
+        this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
     }
 
     logOut = async () => {
-        await this.setState({user: {id: null, name: null}})
+        await this.setState({user: {id: null, name: null, isAdmin: null}})
         localStorage.removeItem('user')
     }
 
-    fetchUser = (user) => {
-        this.setState({
-            user: {
-                id: user.id,
-                name: user.name,
-            }
-        })
+    fetchUser = () => {
+        this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
     }
 
     render() {
