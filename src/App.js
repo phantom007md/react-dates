@@ -27,7 +27,7 @@ class App extends Component {
 
     logOut = async () => {
         await this.setState({user: {id: null, name: null, isAdmin: null}})
-        localStorage.removeItem('user')
+        localStorage.removeItem('DatesUser')
     }
 
     fetchUser = () => {
@@ -66,9 +66,9 @@ class App extends Component {
                             </button>
                         </div>
                         {(this.state.activeTab === 'list') ?
-                            <DateList/> : ''}
+                            <DateList user={this.state.user}/> : ''}
                         {(this.state.activeTab === 'add') ?
-                            <AddDate/> : ''}
+                            <AddDate user={this.state.user}/> : ''}
                     </div>
                 </div>
             </div>

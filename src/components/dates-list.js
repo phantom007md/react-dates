@@ -3,21 +3,19 @@ import Card from "./utils/card";
 import axios from 'axios';
 
 const Status = props => {
-    if (props.status) {
-        return <button disabled={props.disabled || true}
-                       className='btn btn-success'>تایید شده</button>
-    }
-    return <button disabled={props.disabled || true}
-                   className='btn btn-warning'>تایید نشده</button>
+    return <button disabled={props.disabled}
+                   onClick={()=>{props.changeStatus(props.date.id);}}
+                   className={(props.date.active) ? 'btn btn-success' : 'btn btn-warning'}>
+        {
+            (props.date.active) ? <span>تائید شده</span> : <span>تائید نشده</span>
+        }
+    </button>
 }
 
 class DateList extends Component {
 
     state = {
         dates: [],
-        isLoggedIn: false,
-        status: true,
-        isAdmin: false,
     }
 
     componentDidMount() {
@@ -26,11 +24,38 @@ class DateList extends Component {
 
     fetchDates = async () => {
         let dates = (await axios.get('dates')).data
-        console.log(dates)
+        window.dates = dates
         await this.setState({dates})
     }
 
+    changeStatus = async (date) => {
+
+        let res = (await axios.patch(`/dates/${date}`, {
+            user_id: this.props.user.id,
+            type: 'toggleStatus',
+        })).data
+
+        console.log(res)
+
+        this.fetchDates()
+    }
+
+    deleteDate = async (date) => {
+        let res = (await axios.delete(`/dates/${date}`, {user_id: this.props.user.id})).data
+        console.log(res)
+        this.fetchDates()
+    }
+
+    editDate = (date) => {
+        return console.log('edit')
+
+        axios.put(`/dates/${date}/`, {user_id: this.props.user.id, type: 'edit'})
+
+        this.fetchDates()
+    }
+
     render() {
+        let i = 1
         return (
             <div className="dates__list">
                 <Card title='لیست تمامی قرار ها'>
@@ -53,7 +78,7 @@ class DateList extends Component {
                             {
                                 this.state.dates.map(date =>
                                     <tr key={date.id}>
-                                        <td>1</td>
+                                        <td>{i++}</td>
                                         <td>{date.user.name}</td>
                                         <td>{date.topic.name}</td>
                                         <td>
@@ -68,17 +93,23 @@ class DateList extends Component {
                                             {date.length}
                                         </td>
                                         <td>
-                                            <Status disabled={!this.state.isAdmin}
-                                                    status={this.state.status}/>
+                                            <Status
+                                                date={date}
+                                                changeStatus={this.changeStatus}
+                                                disabled={!this.props.user.isAdmin}/>
                                         </td>
                                         {
-                                            this.state.isAdmin &&
+                                            this.props.user.isAdmin &&
                                             <td>
-                                            <span className='controls__item'>
-                                                <i className="material-icons">edit</i></span>
+                                            <span
+                                                onClick={e=>this.editDate(date.id)}
+                                                className='controls__item'>
+                                                <i className="material-icons">edit</i>
+                                            </span>
                                                 <span
+                                                    onClick={(e)=>{this.deleteDate(date.id)}}
                                                     className='controls__item'>
-                                                <i className="material-icons">delete</i>
+                                            <i className="material-icons">delete</i>
                                             </span>
                                             </td>
                                         }

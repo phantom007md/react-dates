@@ -12,9 +12,19 @@ class SignUp extends Component {
 
     signUp = async () => {
         try {
-            let res = await axios.post('register/store', this.state)
-            localStorage.setItem('DatesUser', JSON.stringify({id:res.data.id, name: res.data.name, isAdmin:res.date.isAdmin}))
+
+            let res = (await axios.post('register/store', this.state)).data
+
+            let data = {
+                id:res.id,
+                name:res.name,
+                isAdmin:res.isAdmin,
+            }
+
+            localStorage.setItem('DatesUser', JSON.stringify(data))
+
             this.props.fetchUser()
+
         } catch (e) {
             console.log(e.message)
         }
