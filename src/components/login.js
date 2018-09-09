@@ -13,7 +13,7 @@ class Login extends Component {
     login = async () => {
         try{
 
-            let res = (await axios.post('register/login', {data:this.state.data})).data
+            let res = (await axios.post('/register/login', {data:this.state.data})).data
 
             let data = {
                 id:res.id,

@@ -13,7 +13,7 @@ class SignUp extends Component {
     signUp = async () => {
         try {
 
-            let res = (await axios.post('register/store', this.state)).data
+            let res = (await axios.post('/register/store', this.state)).data
 
             let data = {
                 id:res.id,

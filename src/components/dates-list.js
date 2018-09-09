@@ -101,7 +101,7 @@ class DateList extends Component {
                                                 disabled={!this.props.user.isAdmin}/>
                                         </td>
                                         {
-                                            this.props.user.isAdmin &&
+                                            (this.props.user.isAdmin)?
                                             <td>
                                             <span
                                                 onClick={e=>this.editDate(date.id)}
@@ -113,7 +113,7 @@ class DateList extends Component {
                                                     className='controls__item'>
                                             <i className="material-icons">delete</i>
                                             </span>
-                                            </td>
+                                            </td>: <td style={{visibility: 'hidden'}}></td>
                                         }
                                     </tr>
                                 )}

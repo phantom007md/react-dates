@@ -18,7 +18,7 @@ const Alert = props =>
 class App extends Component {
 
     state = {
-        activeTab: 'add',
+        activeTab: 'list',
         status: null,
         user: {
             id: null,
