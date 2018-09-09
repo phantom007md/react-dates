@@ -2,14 +2,19 @@ import React, {Component} from 'react';
 import InputGroup from "./utils/input";
 import Card from "./utils/card";
 import SelectGroup from "./utils/select";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment-jalaali'
 import axios from 'axios';
+
+
+// import PropTypes from 'prop-types';
+// import DatePicker from '../packages/react-datepicker2/index';
+// import '../packages/react-datepicker2/react-datepicker2.min.css';
+
 
 class AddDate extends Component {
 
     state = {
-        startDate: null,
+        startDate: moment(),
         horses: 0,
         topics: [],
         topic: {
@@ -64,7 +69,7 @@ class AddDate extends Component {
 
             if (res.data.redirect !== 'failed') {
                 window.location = res.data.redirect
-            }else{
+            } else {
                 console.log(res.data, ' :', 'خطایی رخ داده است')
             }
         } catch (e) {
@@ -78,19 +83,12 @@ class AddDate extends Component {
                 <Card title='ثبت درخواست خود'>
                     <div>
 
-                        <DatePicker
-                            placeholderText='زمان و روز خود را مشخص کنید'
-                            showTimeSelect
-                            dateFormat="llll"
-                            selected={this.state.startDate}
-                            onChange={(startDate) => {
-                                this.setState({startDate})
-                            }}
-                        />
+                        {/*<DatePicker onChange={startDate => this.setState({ startDate })} value={this.state.startDate} />*/}
 
-                        {/*<InputGroup type='text'*/}
-                        {/*title='تاریخ و زمان شروع مد نظر :'*/}
-                        {/*id='dateTime'/>*/}
+                        <InputGroup type='text'
+                                    id='dp'
+                                    title='تاریخ و زمان شروع مد نظر :'
+                                    id='dateTime'/>
 
                         <SelectGroup options={this.state.topics}
                                      onChange={e => this.setTopic(e.target.value)}

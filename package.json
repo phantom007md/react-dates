@@ -11,8 +11,8 @@
     "moment-jalaali": "^0.7.4",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
-    "react-advance-jalaali-datepicker": "^0.3.4",
     "react-datepicker": "^1.6.0",
+    "react-datepicker2": "^1.0.0-alpha3",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.5"
   },

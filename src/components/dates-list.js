@@ -24,7 +24,6 @@ class DateList extends Component {
 
     fetchDates = async () => {
         let dates = (await axios.get('dates')).data
-        window.dates = dates
         await this.setState({dates})
     }
 
@@ -41,24 +40,27 @@ class DateList extends Component {
     }
 
     deleteDate = async (date) => {
-        let res = (await axios.delete(`/dates/${date}`, {user_id: this.props.user.id})).data
+        let res = (await axios.delete(`/dates/${date}?user_id=${this.props.user.id}`)).data
         console.log(res)
         this.fetchDates()
     }
 
     editDate = (date) => {
-        return console.log('edit')
+        // edit not set yet
+        // return console.log('edit')
+        // axios.put(`/dates/${date}/`, {user_id: this.props.user.id, type: 'edit'})
+        // this.fetchDates()
+    }
 
-        axios.put(`/dates/${date}/`, {user_id: this.props.user.id, type: 'edit'})
-
-        this.fetchDates()
+    handleDatesToggle = e => {
+        console.log(e.target.checked)
     }
 
     render() {
         let i = 1
         return (
             <div className="dates__list">
-                <Card title='لیست تمامی قرار ها'>
+                <Card handleToggle={this.handleDatesToggle} withToggle title='لیست تمامی قرار ها'>
                     <div className='table-responsive'
                          style={{marginTop: '10px'}}>
                         <table
