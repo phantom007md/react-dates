@@ -86,6 +86,7 @@ class AddDate extends Component {
                         {/*<DatePicker onChange={startDate => this.setState({ startDate })} value={this.state.startDate} />*/}
 
                         <InputGroup type='text'
+                                    placeholder="تاریخ و ساعت شروع را به صورت دستی تایپ کنید"
                                     id='dp'
                                     title='تاریخ و زمان شروع مد نظر :'
                                     id='dateTime'/>
