@@ -82,6 +82,17 @@
   margin-top: 10px;
 }
 
+.confirm__box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: #854000;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .table * {
   text-align: center;
 }

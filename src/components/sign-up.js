@@ -28,6 +28,7 @@ class SignUp extends Component {
             this.props.fetchUser()
 
         } catch (e) {
+            console.log(e.message)
             this.setState({errMessage: 'خطایی در ثبت نام رخ داده.'})
         }
     }

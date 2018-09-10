@@ -4,6 +4,7 @@ import Card from "./utils/card";
 import SelectGroup from "./utils/select";
 import moment from 'moment-jalaali'
 import axios from 'axios';
+import Alert from "./utils/alert";
 
 
 // import PropTypes from 'prop-types';
@@ -21,21 +22,10 @@ class AddDate extends Component {
             id: null,
             basePrice: 0,
         },
-        user: {
-            id: null,
-            name: null,
-        },
         finalPrice: 0,
-    }
-
-    componentWillMount() {
-        (localStorage.getItem('DatesUser') && !this.state.user.id) &&
-        this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
-    }
-
-    componentWillUpdate() {
-        (localStorage.getItem('DatesUser') && !this.state.user.id) &&
-        this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
+        loading: {
+            btn: false,
+        }
     }
 
     componentDidMount() {
@@ -43,39 +33,70 @@ class AddDate extends Component {
     }
 
     fetchTopics = async () => {
-        let topics = (await axios.get('/topics')).data;
-        await this.setState({topics})
+        try {
+            let topics = (await axios.get('/topics')).data;
+            await this.setState({topics})
+        } catch (e) {
+            console.log(e.message)
+            this.setState({errMessage: 'خطایی در واکشی داده ها رخ داده.'})
+        }
     }
 
     setTopic = async topicID => {
-        let topic = (await axios.get(`/topics/${topicID}`)).data
-        await this.setState({topic: {id: topic.id, basePrice: topic.basePrice}})
-        this.setFinalPrice()
+        try {
+            let topic = (await axios.get(`/topics/${topicID}`)).data
+            await this.setState({
+                topic: {
+                    id: topic.id,
+                    basePrice: topic.basePrice
+                }
+            })
+            this.setFinalPrice()
+        } catch (e) {
+            console.log(e.message)
+            this.setState({errMessage: 'خطایی در واکشی داده ها رخ داده.'})
+        }
     }
 
     setFinalPrice = async () => {
-        let finalPrice = Math.floor(this.state.topic.basePrice * this.state.horses)
-        await this.setState({finalPrice})
+
+        if (typeof this.state.horses === 'number') {
+            let finalPrice = Math.floor(this.state.topic.basePrice * this.state.horses)
+            await this.setState({finalPrice})
+        } else {
+            this.setState({errMessage: 'خطا در داده های ورودی.'})
+        }
     }
 
     pay = async () => {
         try {
+            await this.setState({loading: {...this.state.loading, btn: true}})
             let res = await axios.post('/payments/pay', {
                 uri: window.location.href,
-                user_id: this.state.user.id,
-                topic_id: this.state.topic.id,
-                horses: this.state.horses,
+                user_id: parseInt(this.props.user.id),
+                topic_id: parseInt(this.state.topic.id),
+                horses: parseInt(this.state.horses),
                 start_date: this.state.startDate,
             })
             window.location = res.data.redirect
         } catch (e) {
-            console.dir(e)
+            console.log(e.message)
+            setTimeout(()=>{
+                this.setState({loading: {...this.state.loading, btn: false}})
+            }, 3000)
+            this.setState({errMessage: 'خطایی در عملیات پرداخت رخ داده است.'})
         }
     }
 
     render() {
         return (
             <div className="dates__list">
+                {(this.state.errMessage) ?
+                    <Alert handleOnClick={(e) => {
+                        this.setState({errMessage: null})
+                    }} danger>
+                        {this.state.errMessage}
+                    </Alert> : ''}
                 <Card title='ثبت درخواست خود'>
                     <div>
 
@@ -101,9 +122,9 @@ class AddDate extends Component {
                                 className="filed">{this.state.topic.basePrice}</div>
                         </div>
 
-                        <InputGroup type='text'
+                        <InputGroup type='number'
                                     onChange={async e => {
-                                        let horses = e.target.value
+                                        let horses = parseInt(e.target.value)
                                         await this.setState({horses})
                                         this.setFinalPrice()
                                     }}
@@ -119,7 +140,7 @@ class AddDate extends Component {
                         <div className="form-group text-left">
                             <button type="button"
                                     onClick={this.pay}
-                                    disabled={this.state.finalPrice <= 0}
+                                    disabled={(this.state.finalPrice <= 0 || this.state.loading.btn)}
                                     className="btn btn-warning">پرداخت
                             </button>
                         </div>

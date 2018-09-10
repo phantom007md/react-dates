@@ -26,6 +26,7 @@ class Login extends Component {
             this.props.fetchUser()
 
         } catch (e) {
+            console.log(e.message)
             // if status 404 کاربر پیدا نشد   and so on
             this.setState({errMessage: 'کاربر وجود ندارد یا خطایی رخ داده.'})
         }

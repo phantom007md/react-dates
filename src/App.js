@@ -4,6 +4,7 @@ import DateList from "./components/dates-list";
 import AddDate from "./components/add-date";
 import Auth from "./components/auth";
 import Alert from "./components/utils/alert";
+import axios from 'axios';
 
 class App extends Component {
 
@@ -15,6 +16,19 @@ class App extends Component {
             name: null,
             isAdmin: null,
         },
+        loading: {
+            reload: false
+        }
+    }
+
+    activeBlcok = () => {
+        this.setState({loading: {...this.state.loading, reload: true}})
+    }
+
+    deActiveBlock = () => {
+        setTimeout(async ()=>{
+            await this.setState({loading: {...this.state.loading, reload: false}})
+        }, 2000)
     }
 
     componentWillMount() {
@@ -39,6 +53,7 @@ class App extends Component {
     fetchUser = () => {
         this.setState({user: JSON.parse(localStorage.getItem('DatesUser'))})
     }
+
 
     clearQueryString = () => {
         let uri = window.location.toString();
@@ -72,6 +87,12 @@ class App extends Component {
                         </div>
                         }
                         <div className="index-actions">
+                            <button style={{display: 'inline-flex'}}
+                                    className={"btn btn-outline-info"}
+                                    onClick={e => {
+                                        window.location.reload()
+                                    }}><i className='material-icons'>refresh</i>
+                            </button>
                             <button
                                 className={(this.state.activeTab === 'add') ? "btn btn-info" : "btn btn-outline-info"}
                                 onClick={e => {
@@ -89,12 +110,14 @@ class App extends Component {
                         </div>
                         <div style={{paddingTop: '10px'}}>
                             {(this.state.status === 'ok') ?
-                                <Alert success handleOnClick={this.clearQueryString}>
+                                <Alert success
+                                       handleOnClick={this.clearQueryString}>
                                     پرداخت با موفقیت انجام شد
                                 </Alert>
                                 : ''}
                             {(this.state.status === 'failed') ?
-                                <Alert danger handleOnClick={this.clearQueryString}>
+                                <Alert danger
+                                       handleOnClick={this.clearQueryString}>
                                     خطا در انجام عملیات
                                 </Alert>
                                 : ''}
