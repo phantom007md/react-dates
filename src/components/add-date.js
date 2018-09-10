@@ -61,17 +61,13 @@ class AddDate extends Component {
     pay = async () => {
         try {
             let res = await axios.post('/payments/pay', {
+                uri: window.location.href,
                 user_id: this.state.user.id,
                 topic_id: this.state.topic.id,
                 horses: this.state.horses,
                 start_date: this.state.startDate,
             })
-
-            if (res.data.redirect !== 'failed') {
-                window.location = res.data.redirect
-            } else {
-                console.log(res.data, ' :', 'خطایی رخ داده است')
-            }
+            window.location = res.data.redirect
         } catch (e) {
             console.dir(e)
         }
@@ -86,7 +82,10 @@ class AddDate extends Component {
                         {/*<DatePicker onChange={startDate => this.setState({ startDate })} value={this.state.startDate} />*/}
 
                         <InputGroup type='text'
-                                    style={{direction: 'ltr', textAlign: 'right'}}
+                                    style={{
+                                        direction: 'ltr',
+                                        textAlign: 'right'
+                                    }}
                                     placeholder="تاریخ و ساعت شروع را به صورت دستی تایپ کنید"
                                     id='dp'
                                     title='تاریخ و زمان شروع مد نظر :'

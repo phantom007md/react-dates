@@ -3,17 +3,7 @@ import './styles/App.css';
 import DateList from "./components/dates-list";
 import AddDate from "./components/add-date";
 import Auth from "./components/auth";
-
-const Alert = props =>
-    <div
-        className={(props.success) ? "alert alert-success" : "alert alert-danger" + "  fade show"}
-        role="alert">
-        {props.children}
-        <button onClick={props.clearQueryString} style={{float: 'left', right:'auto', left: '0'}}
-                type="button" className="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+import Alert from "./components/utils/alert";
 
 class App extends Component {
 
@@ -99,13 +89,12 @@ class App extends Component {
                         </div>
                         <div style={{paddingTop: '10px'}}>
                             {(this.state.status === 'ok') ?
-                                <Alert success
-                                       clearQueryString={this.clearQueryString}>
+                                <Alert success handleOnClick={this.clearQueryString}>
                                     پرداخت با موفقیت انجام شد
                                 </Alert>
                                 : ''}
                             {(this.state.status === 'failed') ?
-                                <Alert clearQueryString={this.clearQueryString}>
+                                <Alert danger handleOnClick={this.clearQueryString}>
                                     خطا در انجام عملیات
                                 </Alert>
                                 : ''}

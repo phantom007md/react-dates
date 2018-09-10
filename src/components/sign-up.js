@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import Card from "./utils/card";
 import InputGroup from "./utils/input";
 import axios from 'axios';
+import Alert from "./utils/alert";
 
 class SignUp extends Component {
     state = {
         name: '',
         phone: '',
         email: '',
+        errMessage:null,
     }
 
     signUp = async () => {
@@ -26,7 +28,7 @@ class SignUp extends Component {
             this.props.fetchUser()
 
         } catch (e) {
-            console.log(e.message)
+            this.setState({errMessage: 'خطایی در ثبت نام رخ داده.'})
         }
     }
 
@@ -34,6 +36,10 @@ class SignUp extends Component {
         return (
             <div className="sign-up">
                 <Card title='ثبت نام' style={{width: '300px'}}>
+                    {(this.state.errMessage) ?
+                        <Alert handleOnClick={(e)=>{this.setState({errMessage: null})}} danger>
+                            {this.state.errMessage}
+                        </Alert> : ''}
                     <div>
                         <InputGroup type='text'
                                     onKeyPress={e => {
@@ -67,10 +73,14 @@ class SignUp extends Component {
                                     title='شماره موبایل :'
                                     id='phone'
                                     placeholder='شماره موبایل خود را وارد کنید'/>
-                        <div className="form-group text-center">
+                        <div className="form-group d-flex justify-content-between">
                             <button type="button"
                                     onClick={this.signUp}
                                     className="btn btn-primary">ثبت نام
+                            </button>
+                            <button type="button"
+                                    onClick={e=>this.props.changeTab('login')}
+                                    className="btn btn-outline-primary">ورود
                             </button>
                         </div>
                     </div>
