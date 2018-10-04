@@ -15,6 +15,8 @@ class Login extends Component {
         try {
 
             let res = (await axios.post('/register/login', {data: this.state.data})).data
+            console.log(res);
+            
 
             let data = {
                 id: res.id,

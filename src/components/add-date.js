@@ -5,6 +5,8 @@ import SelectGroup from "./utils/select";
 import moment from 'moment-jalaali'
 import axios from 'axios';
 import Alert from "./utils/alert";
+import DatePicker from './datepicker/src/components/DatePicker'
+import './datepicker/dist/react-datepicker2.min.css'
 
 
 // import PropTypes from 'prop-types';
@@ -15,7 +17,7 @@ import Alert from "./utils/alert";
 class AddDate extends Component {
 
     state = {
-        startDate: moment(),
+        dateTime: moment(),
         horses: 0,
         topics: [],
         topic: {
@@ -76,7 +78,8 @@ class AddDate extends Component {
                 user_id: parseInt(this.props.user.id),
                 topic_id: parseInt(this.state.topic.id),
                 horses: parseInt(this.state.horses),
-                start_date: this.state.startDate,
+                dateTime: this.state.dateTime,
+                discount: this.state.discount,
             })
             window.location = res.data.redirect
         } catch (e) {
@@ -100,17 +103,14 @@ class AddDate extends Component {
                 <Card title='ثبت درخواست خود'>
                     <div>
 
-                        {/*<DatePicker onChange={startDate => this.setState({ startDate })} value={this.state.startDate} />*/}
-
-                        <InputGroup type='text'
-                                    style={{
-                                        direction: 'ltr',
-                                        textAlign: 'right'
-                                    }}
-                                    placeholder="تاریخ و ساعت شروع را به صورت دستی تایپ کنید"
-                                    id='dp'
-                                    title='تاریخ و زمان شروع مد نظر :'
-                                    id='dateTime'/>
+                        <div className="form-group dates-datepicker">
+                            <label>زمان دوره خود را مشخص کنید</label>
+                            <DatePicker
+                                isGregorian={false}
+                                onChange={dateTime => this.setState({ dateTime })}
+                                value={this.state.dateTime}
+                            />
+                        </div>
 
                         <SelectGroup options={this.state.topics}
                                      onChange={e => this.setTopic(e.target.value)}
@@ -128,6 +128,7 @@ class AddDate extends Component {
                                         await this.setState({horses})
                                         this.setFinalPrice()
                                     }}
+                                    value={this.state.horses}
                                     title='مدت زمان :'
                                     id='length'
                                     placeholder='مدت زمان مورد نظر را به ساعت وارد کنید'/>
@@ -136,6 +137,15 @@ class AddDate extends Component {
                             <label>هزینه نهایی :</label>
                             <div className="filed">{this.state.finalPrice}</div>
                         </div>
+
+                        <InputGroup type='text'
+                            onChange={async e => { 
+                                this.setState({discount:e.target.value})
+                            }}
+                            value={this.state.discount}
+                            title='کد تخفیف'
+                            id='discount'
+                            placeholder='کد تخفیف را وارد کنید' />
 
                         <div className="form-group text-left">
                             <button type="button"

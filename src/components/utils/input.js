@@ -6,7 +6,7 @@ const InputGroup = props =>
             htmlFor={props.id || Date.now()}>{props.title || ''}</label>
         <input
             onKeyPress={props.onKeyPress}
-            value={props.value||undefined}
+            value={props.value||''}
             style={props.style}
             onChange={props.onChange}
             defaultValue={props.defaultValue||undefined}
