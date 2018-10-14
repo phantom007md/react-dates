@@ -8,12 +8,6 @@ import Alert from "./utils/alert";
 import DatePicker from './datepicker/src/components/DatePicker'
 import './datepicker/dist/react-datepicker2.min.css'
 
-
-// import PropTypes from 'prop-types';
-// import DatePicker from '../packages/react-datepicker2/index';
-// import '../packages/react-datepicker2/react-datepicker2.min.css';
-
-
 class AddDate extends Component {
 
     state = {

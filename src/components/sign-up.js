@@ -11,7 +11,7 @@ class SignUp extends Component {
         email: '',
         errMessage:null,
     }
-
+    
     signUp = async () => {
         try {
 
@@ -43,6 +43,7 @@ class SignUp extends Component {
                         </Alert> : ''}
                     <div>
                         <InputGroup type='text'
+                        value={this.state.name}
                                     onKeyPress={e => {
                                         e.key === 'Enter' && this.signUp()
                                     }}
@@ -53,6 +54,7 @@ class SignUp extends Component {
                                     id='name'
                                     placeholder='نام و نام خانوادگی خود را وارد کنید'/>
                         <InputGroup type='email'
+                        value={this.state.email}
                                     onKeyPress={e => {
                                         e.key === 'Enter' && this.signUp()
                                     }}
@@ -64,6 +66,7 @@ class SignUp extends Component {
                                     id='email'
                                     placeholder='ایمیل خود را وارد کنید'/>
                         <InputGroup type='text'
+                        value={this.state.phone}
                                     onKeyPress={e => {
                                         e.key === 'Enter' && this.signUp()
                                     }}

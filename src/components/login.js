@@ -44,6 +44,7 @@ class Login extends Component {
                         </Alert> : ''}
                     <div>
                         <InputGroup type='text'
+                                    value={this.state.data}
                                     onKeyPress={e => {
                                         e.key === 'Enter' && this.login()
                                     }}
